@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import './App.css';
 import Particles from 'react-particles-js';
 import Navigation from './components/Navigation/Navigation';
@@ -18,6 +19,53 @@ const particlesOptions = {
 }
 
 function App() {
+  const [input, setInput] = useState('')
+  const [imageUrl, setImageUrl] = useState('')
+  const [box, setBox] = useState({})
+  const [route, setRoute] = useState('signin')
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [user, setUser] = useState({
+    id: '',
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  })
+
+  const loadUser = data => {
+    setUser({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    })
+  }
+
+  const displayFaceBox = box => {
+    setBox(box)
+  }
+
+  const onInputChange = e => {
+    e.preventDefault()
+    setInput(e.target.value)
+    console.log(e.target.value)
+  }
+
+  const onButtonSubmit = () => {
+    // setImageUrl(input)
+    console.log('Click')
+  }
+
+  const onRouteChange = route => {
+    if (route === 'signout') {
+      setIsSignedIn(false)
+    } else if (route === 'home') {
+      setIsSignedIn(true)
+    }
+    setRoute(route)
+  }
+
   return (
     <div className="App">
       <Particles className='particles'
@@ -25,8 +73,8 @@ function App() {
       />
       <Navigation />
       <Logo />
-      <Rank />
-      <ImageLinkForm />
+      <Rank name={user.name} entries={user.entries} />
+      <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
       {/* <FaceRecogniton /> */}
     </div>
   );
