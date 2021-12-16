@@ -43,6 +43,19 @@ function App() {
     })
   }
 
+  const calculateFaceLocation = data => {
+    const clarifaiFace = data.outputs[0].data.regions[0].region_info.bounding_box;
+    const image = document.getElementById('inputimage');
+    const width = Number(image.width);
+    const height = Number(image.height);
+    return {
+      leftCol: clarifaiFace.left_col * width,
+      topRow: clarifaiFace.top_row * height,
+      rightCol: width - (clarifaiFace.right_col * width),
+      bottomRow: height - (clarifaiFace.bottom_row * height)
+    }
+  }
+
   const displayFaceBox = box => {
     setBox(box)
   }
@@ -78,10 +91,11 @@ function App() {
     }
     fetch(`https://api.clarifai.com/v2/models/a403429f2ddf4b49b307e318f00e528b/outputs`, requestOptions)
     .then(response => response.text())
-    .then(result => console.log(JSON.parse(result).outputs[0].data))
+    .then(result => {
+      displayFaceBox(calculateFaceLocation(JSON.parse(result)))
+    })
     .catch(error => console.log('error', error));
     // Use below url as sample test
-    // https://samples.clarifai.com/metro-north.jpg
     // https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528
   //   .then(response => {
   //     console.log('hi', response)
