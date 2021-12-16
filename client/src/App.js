@@ -76,25 +76,13 @@ function App() {
         ]
       })
     }
-    fetch(`https://api.clarifai.com/v2/models/${process.env.REACT_APP_CLARIFAI_MODEL_ID}/outputs`, requestOptions)
+    fetch(`https://api.clarifai.com/v2/models/a403429f2ddf4b49b307e318f00e528b/outputs`, requestOptions)
     .then(response => response.text())
-    .then(result => console.log(JSON.parse(result, null, 2).outputs[0].data))
+    .then(result => console.log(JSON.parse(result).outputs[0].data))
     .catch(error => console.log('error', error));
     // Use below url as sample test
     // https://samples.clarifai.com/metro-north.jpg
-  //   app.models
-  //   .predict(
-  // // HEADS UP! Sometimes the Clarifai Models can be down or not working as they are constantly getting updated.
-  // // A good way to check if the model you are using is up, is to check them on the clarifai website. For example,
-  // // for the Face Detect Mode: https://www.clarifai.com/models/face-detection
-  // // If that isn't working, then that means you will have to wait until their servers are back up. Another solution
-  // // is to use a different version of their model that works like the ones found here: https://github.com/Clarifai/clarifai-javascript/blob/master/src/index.js
-  // // so you would change from:
-  // // .predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
-  // // to:
-  // // .predict('53e1df302c079b3db8a0a36033ed2d15', this.state.input)
-  //     Clarifai.FACE_DETECT_MODEL,
-  //     this.state.input)
+    // https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528
   //   .then(response => {
   //     console.log('hi', response)
   //     if (response) {
