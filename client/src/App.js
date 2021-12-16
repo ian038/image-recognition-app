@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import './App.css';
-import Clarifai from 'clarifai';
 import Particles from 'react-particles-js';
 import Navigation from './components/Navigation/Navigation';
 import Logo from './components/Logo/Logo'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 
 const particlesOptions = {
   particles: {
@@ -80,6 +80,8 @@ function App() {
     .then(response => response.text())
     .then(result => console.log(JSON.parse(result, null, 2).outputs[0].data))
     .catch(error => console.log('error', error));
+    // Use below url as sample test
+    // https://samples.clarifai.com/metro-north.jpg
   //   app.models
   //   .predict(
   // // HEADS UP! Sometimes the Clarifai Models can be down or not working as they are constantly getting updated.
@@ -130,7 +132,7 @@ function App() {
       <Logo />
       <Rank name={user.name} entries={user.entries} />
       <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
-      {/* <FaceRecogniton /> */}
+      <FaceRecognition box={box} imageUrl={imageUrl} />
     </div>
   );
 }
