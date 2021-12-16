@@ -7,11 +7,11 @@ export default function Signin({ onRouteChange }) {
     })
 
     const onEmailChange = e => {
-        setAuthInfo({ ...authInfo, signInEmail: e.target.value})
+        setAuthInfo({ ...authInfo, signInEmail: e.target.value })
     }
     
     const onPasswordChange = e => {
-        setAuthInfo({ ...authInfo, signInPassword: e.target.value})
+        setAuthInfo({ ...authInfo, signInPassword: e.target.value })
     }
     
     const onSubmitSignIn = () => {
@@ -30,7 +30,7 @@ export default function Signin({ onRouteChange }) {
         //       this.props.onRouteChange('home');
         //     }
         // })
-        console.log('Worked')
+        console.log('Signing in')
     }
 
     return (
