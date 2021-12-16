@@ -6,6 +6,8 @@ import Logo from './components/Logo/Logo'
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import Signin from './components/Signin/Signin';
+import Register from './components/Register/Register';
 
 const particlesOptions = {
   particles: {
@@ -130,11 +132,16 @@ function App() {
       <Particles className='particles'
         params={particlesOptions}
       />
-      <Navigation />
-      <Logo />
-      <Rank name={user.name} entries={user.entries} />
-      <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
-      <FaceRecognition box={box} imageUrl={imageUrl} />
+      <Navigation isSignedIn={isSignedIn} onRouteChange={onRouteChange} />
+      {
+        route === 'home' ?
+        <div>
+          <Logo />
+          <Rank name={user.name} entries={user.entries} />
+          <ImageLinkForm onInputChange={onInputChange} onButtonSubmit={onButtonSubmit} />
+          <FaceRecognition box={box} imageUrl={imageUrl} />
+        </div> : (route === 'signin' ? <Signin loadUser={loadUser} onRouteChange={onRouteChange}/> : <Register loadUser={loadUser} onRouteChange={onRouteChange}/>)
+      }
     </div>
   );
 }
