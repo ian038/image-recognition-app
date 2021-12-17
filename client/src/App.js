@@ -43,6 +43,7 @@ function App() {
       entries: data.entries,
       joined: data.joined
     })
+    setImageUrl('')
   }
 
   const calculateFaceLocation = data => {
@@ -111,8 +112,6 @@ function App() {
       displayFaceBox(calculateFaceLocation(JSON.parse(result)))
     })
     .catch(error => console.log('error', error));
-    // Use below url as sample test
-    // https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528
   }
 
   const onRouteChange = route => {
