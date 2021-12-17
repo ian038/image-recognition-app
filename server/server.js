@@ -9,7 +9,6 @@ app.use(cors())
 app.use(express.json()); 
 
 const db = knex({
-    // Enter your own database information here based on what you created
     client: 'pg',
     connection: {
       host : '127.0.0.1',
@@ -18,12 +17,6 @@ const db = knex({
       database : 'smart-brain'
     }
 });
-
-app.get('/', (req, res)=> {
-    db.select('*').from('users').then(data => {
-        res.send(data)
-    }).catch(error => res.status(400).json('Unable to connect to database'))
-})
 
 app.post('/signin', (req, res) => {
     db.select('email', 'hash').from('login')
@@ -70,18 +63,6 @@ app.post('/register', (req, res) => {
     }).catch(err => {
         res.status(400).json('unable to register')
     })
-})
-
-app.get('/profile/:id', (req, res) => {
-    const { id } = req.params;
-    db.select('*').from('users').where({id})
-      .then(user => {
-        if (user.length) {
-          res.json(user[0])
-        } else {
-          res.status(400).json('Not found')
-        }
-    }).catch(err => res.status(400).json('error getting user'))
 })
   
 app.put('/image', (req, res) => {
