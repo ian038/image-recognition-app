@@ -20,7 +20,7 @@ export default function Register({ loadUser, onRouteChange }) {
     }
 
     const onSubmitRegister = () => {
-        fetch('http://localhost:8000/register', {
+        fetch('https://image-recognition-app-server.herokuapp.com/register', {
           method: 'post',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

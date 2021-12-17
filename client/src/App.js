@@ -91,12 +91,12 @@ function App() {
         ]
       })
     }
-    
+
     fetch(`https://api.clarifai.com/v2/models/a403429f2ddf4b49b307e318f00e528b/outputs`, requestOptions)
     .then(response => response.text())
     .then(result => {
       if (result) {
-        fetch('http://localhost:8000/image', {
+        fetch('https://image-recognition-app-server.herokuapp.com/image', {
           method: 'put',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

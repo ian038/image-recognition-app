@@ -15,7 +15,7 @@ export default function Signin({ loadUser, onRouteChange }) {
     }
     
     const onSubmitSignIn = () => {
-        fetch('http://localhost:8000/signin', {
+        fetch('https://image-recognition-app-server.herokuapp.com/signin', {
           method: 'post',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -29,7 +29,7 @@ export default function Signin({ loadUser, onRouteChange }) {
               loadUser(user)
               onRouteChange('home');
             }
-        })
+        }).catch(error => alert(error))
     }
 
     return (
