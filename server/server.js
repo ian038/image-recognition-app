@@ -8,28 +8,41 @@ const app = express();
 app.use(cors())
 app.use(express.json()); 
 
+const db = knex({
+    // Enter your own database information here based on what you created
+    client: 'pg',
+    connection: {
+      host : '127.0.0.1',
+      user : 'ian',
+      password : 'Angie1028',
+      database : 'smart-brain'
+    }
+});
+
 // test data
-const db = {
-    users: [
-        {
-            id: '123',
-            name: 'John',
-            email: 'john117@gmail.com',
-            entries: 0,
-            joined: new Date()
-        },
-        {
-            id: '124',
-            name: 'Sally',
-            email: 'sally@gmail.com',
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-}
+// const db = {
+//     users: [
+//         {
+//             id: '123',
+//             name: 'John',
+//             email: 'john117@gmail.com',
+//             entries: 0,
+//             joined: new Date()
+//         },
+//         {
+//             id: '124',
+//             name: 'Sally',
+//             email: 'sally@gmail.com',
+//             entries: 0,
+//             joined: new Date()
+//         }
+//     ]
+// }
 
 app.get('/', (req, res)=> {
-    res.send(db.users);
+    db.select('*').from('users').then(data => {
+        res.send(data)
+    }).catch(error => res.status(400).json('Unable to connect to database'))
 })
 
 app.post('/signin', (req, res) => {
@@ -52,7 +65,7 @@ app.post('/signin', (req, res) => {
   
 app.post('/register', (req, res) => {
     const { email, name, password } = req.body;
-    const hash = bcrypt.hashSync(password);
+    const hash = bcrypt.hashSync(password, 12);
     db.transaction(trx => {
         trx.insert({
           hash: hash,
@@ -74,7 +87,10 @@ app.post('/register', (req, res) => {
         })
         .then(trx.commit)
         .catch(trx.rollback)
-    }).catch(err => res.status(400).json('unable to register'))
+    }).catch(err => {
+        console.log(err)
+        res.status(400).json('unable to register')
+    })
 })
 
 app.get('/profile/:id', (req, res) => {
@@ -120,6 +136,6 @@ app.post('/image', (req, res) => {
     // }).catch(err => res.status(400).json('unable to get entries'))
 })
 
-app.listen(5000, ()=> {
-    console.log('app running on port 5000');
+app.listen(8000, ()=> {
+    console.log('app running on port 8000');
 })

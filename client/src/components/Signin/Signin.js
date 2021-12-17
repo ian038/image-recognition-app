@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function Signin({ onRouteChange }) {
+export default function Signin({ loadUser, onRouteChange }) {
     const [authInfo, setAuthInfo] = useState({
         signInEmail: '',
         signInPassword: ''
@@ -15,22 +15,21 @@ export default function Signin({ onRouteChange }) {
     }
     
     const onSubmitSignIn = () => {
-        // fetch('http://localhost:3000/signin', {
-        //   method: 'post',
-        //   headers: {'Content-Type': 'application/json'},
-        //   body: JSON.stringify({
-        //     email: this.state.signInEmail,
-        //     password: this.state.signInPassword
-        //   })
-        // })
-        //   .then(response => response.json())
-        //   .then(user => {
-        //     if (user.id) {
-        //       this.props.loadUser(user)
-        //       this.props.onRouteChange('home');
-        //     }
-        // })
-        console.log('Signing in')
+        fetch('http://localhost:8000/signin', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: authInfo.signInEmail,
+            password: authInfo.signInPassword
+          })
+        })
+          .then(response => response.json())
+          .then(user => {
+            if (user.id) {
+              loadUser(user)
+              onRouteChange('home');
+            }
+        })
     }
 
     return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function Register() {
+export default function Register({ loadUser, onRouteChange }) {
     const [registerInfo, setRegisterInfo] = useState({
         email: '',
         password: '',
@@ -20,23 +20,22 @@ export default function Register() {
     }
 
     const onSubmitRegister = () => {
-        // fetch('http://localhost:3000/register', {
-        //   method: 'post',
-        //   headers: {'Content-Type': 'application/json'},
-        //   body: JSON.stringify({
-        //     email: this.state.email,
-        //     password: this.state.password,
-        //     name: this.state.name
-        //   })
-        // })
-        //   .then(response => response.json())
-        //   .then(user => {
-        //     if (user) {
-        //       this.props.loadUser(user)
-        //       this.props.onRouteChange('home');
-        //     }
-        // })
-        console.log('Registering')
+        fetch('http://localhost:8000/register', {
+          method: 'post',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: registerInfo.email,
+            password: registerInfo.password,
+            name: registerInfo.name
+          })
+        })
+          .then(response => response.json())
+          .then(user => {
+            if (user) {
+              loadUser(user)
+              onRouteChange('home');
+            }
+        })
     }
 
     return (
