@@ -91,31 +91,28 @@ function App() {
         ]
       })
     }
+    
     fetch(`https://api.clarifai.com/v2/models/a403429f2ddf4b49b307e318f00e528b/outputs`, requestOptions)
     .then(response => response.text())
     .then(result => {
+      if (result) {
+        fetch('http://localhost:8000/image', {
+          method: 'put',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: user.id
+          })
+        })
+        .then(response => response.json())
+          .then(count => {
+            setUser({ ...user, entries: count })
+          })
+      }
       displayFaceBox(calculateFaceLocation(JSON.parse(result)))
     })
     .catch(error => console.log('error', error));
     // Use below url as sample test
     // https://i0.wp.com/post.medicalnewstoday.com/wp-content/uploads/sites/3/2020/03/GettyImages-1092658864_hero-1024x575.jpg?w=1155&h=1528
-  //   .then(response => {
-  //     console.log('hi', response)
-  //     if (response) {
-  //       fetch('http://localhost:3000/image', {
-  //         method: 'put',
-  //         headers: {'Content-Type': 'application/json'},
-  //         body: JSON.stringify({
-  //           id: this.state.user.id
-  //         })
-  //       })
-  //         .then(response => response.json())
-  //         .then(count => {
-  //           this.setState(Object.assign(this.state.user, { entries: count}))
-  //         })
-
-  //     }
-  //   })
   }
 
   const onRouteChange = route => {

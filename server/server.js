@@ -19,26 +19,6 @@ const db = knex({
     }
 });
 
-// test data
-// const db = {
-//     users: [
-//         {
-//             id: '123',
-//             name: 'John',
-//             email: 'john117@gmail.com',
-//             entries: 0,
-//             joined: new Date()
-//         },
-//         {
-//             id: '124',
-//             name: 'Sally',
-//             email: 'sally@gmail.com',
-//             entries: 0,
-//             joined: new Date()
-//         }
-//     ]
-// }
-
 app.get('/', (req, res)=> {
     db.select('*').from('users').then(data => {
         res.send(data)
@@ -88,52 +68,30 @@ app.post('/register', (req, res) => {
         .then(trx.commit)
         .catch(trx.rollback)
     }).catch(err => {
-        console.log(err)
         res.status(400).json('unable to register')
     })
 })
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    let found = false
-    db.users.forEach(user => {
-        if(user.id === id) {
-            found = true
-            return res.status(200).json(user)
+    db.select('*').from('users').where({id})
+      .then(user => {
+        if (user.length) {
+          res.json(user[0])
+        } else {
+          res.status(400).json('Not found')
         }
-    })
-    if(!found) {
-        res.status(404).json('No such user')
-    }
-    // db.select('*').from('users').where({id})
-    //   .then(user => {
-    //     if (user.length) {
-    //       res.json(user[0])
-    //     } else {
-    //       res.status(400).json('Not found')
-    //     }
-    // }).catch(err => res.status(400).json('error getting user'))
+    }).catch(err => res.status(400).json('error getting user'))
 })
   
-app.post('/image', (req, res) => {
+app.put('/image', (req, res) => {
     const { id } = req.body;
-    let found = false
-    db.users.forEach(user => {
-        if(user.id === id) {
-            found = true
-            user.entries += 1
-            return res.status(200).json(user.entries)
-        }
-    })
-    if(!found) {
-        res.status(404).json('No such user')
-    }
-    // db('users').where('id', '=', id)
-    // .increment('entries', 1)
-    // .returning('entries')
-    // .then(entries => {
-    //   res.json(entries[0]);
-    // }).catch(err => res.status(400).json('unable to get entries'))
+    db('users').where('id', '=', id)
+    .increment('entries', 1)
+    .returning('entries')
+    .then(entries => {
+        res.json(entries[0]);
+    }).catch(err => res.status(400).json('unable to get entries'))
 })
 
 app.listen(8000, ()=> {
